@@ -18,23 +18,41 @@ import com.github.xepozz.toon.language.psi.ToonTypes;
 NEWLINE=\r|\n|\r\n
 WHITESPACE=[ \t]+
 ALPHA=[A-Za-z]
+NUMBER=[\d]+(.[\d]+)?
 
-%state VALUE
+%state VALUE, TABLE_SIZE
 %%
 
 <YYINITIAL> {
     #[^\n]*       { return ToonTypes.COMMENT; }
     ([\w-]+)      { return ToonTypes.TEXT; }
     ":"           { yybegin(VALUE); return ToonTypes.DELIMITER; }
+    "["           { yybegin(TABLE_SIZE); return ToonTypes.LBRACKET; }
 }
+
+<TABLE_SIZE> {
+    {NUMBER}          { return ToonTypes.NUMBER; }
+    "]"               { yybegin(YYINITIAL); return ToonTypes.RBRACKET; }
+}
+
 <VALUE> {
     "null"                  { return ToonTypes.NULL; }
     "false"                 { return ToonTypes.FALSE; }
     "true"                  { return ToonTypes.TRUE; }
-    [\d]+(.[\d]+)?          { return ToonTypes.NUMBER; }
-    {ALPHA}[^\n]*             { return ToonTypes.TEXT; }
-    \"([^\\\"]|.)+\"             { return ToonTypes.TEXT; }
+    ","                     { return ToonTypes.COMMA; }
+    {NUMBER}                { return ToonTypes.NUMBER; }
+    {ALPHA}[^\n,]*          { return ToonTypes.TEXT; }
+    \"([^\\\"]|.)+\"        { return ToonTypes.TEXT; }
 }
 
-{WHITESPACE}      { return TokenType.WHITE_SPACE; }
-{NEWLINE}         { yybegin(YYINITIAL); return ToonTypes.EOL; }
+
+// Special symbols
+","                     { return ToonTypes.COMMA; }
+"{"                     { return ToonTypes.LBRACE; }
+"}"                     { return ToonTypes.RBRACE; }
+"("                     { return ToonTypes.LPAREN; }
+")"                     { return ToonTypes.RPAREN; }
+"["                     { return ToonTypes.LBRACKET; }
+"]"                     { return ToonTypes.RBRACKET; }
+{WHITESPACE}            { return TokenType.WHITE_SPACE; }
+{NEWLINE}               { yybegin(YYINITIAL); return ToonTypes.EOL; }

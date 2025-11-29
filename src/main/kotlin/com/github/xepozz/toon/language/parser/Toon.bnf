@@ -13,18 +13,28 @@
   tokenTypeClass = "com.github.xepozz.toon.language.psi.ToonTokenType"
 
   psiImplUtilClass="com.github.xepozz.toon.language.psi.impl.ToonImplUtil"
+  tokens=[
+    LPAREN="LPAREN"
+    RPAREN="RPAREN"
+  ]
 }
 
 file ::= entry*
 
-private entry ::= keyValueList | COMMENT | EOL
+private entry ::= table | keyValueList | COMMENT | EOL
 
-keyValueList ::= key DELIMITER value?
+table ::= tableDefinition DELIMITER iterable?
+
+tableDefinition ::= key LBRACKET NUMBER RBRACKET (LBRACE iterable RBRACE)?
+
+keyValueList ::= key DELIMITER iterable?
 {
     pin=1
 }
 
 key ::= TEXT
+
+iterable ::= value (COMMA value)+
 
 value ::= TEXT | NULL | FALSE | TRUE | NUMBER
 {
