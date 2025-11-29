@@ -1,7 +1,7 @@
 package com.github.xepozz.toon.ide.completion
 
 import com.github.xepozz.toon.ToonIcons
-import com.github.xepozz.toon.language.psi.ToonDirective
+import com.github.xepozz.toon.language.psi.ToonKey
 import com.intellij.codeInsight.completion.CompletionContributor
 import com.intellij.codeInsight.completion.CompletionParameters
 import com.intellij.codeInsight.completion.CompletionProvider
@@ -24,7 +24,7 @@ class ToonCompletionContributor : CompletionContributor(), DumbAware {
         extend(
             CompletionType.BASIC,
             PlatformPatterns.psiElement()
-                .withParent(ToonDirective::class.java),
+                .withParent(ToonKey::class.java),
             object : CompletionProvider<CompletionParameters>(), DumbAware {
                 override fun addCompletions(
                     parameters: CompletionParameters,

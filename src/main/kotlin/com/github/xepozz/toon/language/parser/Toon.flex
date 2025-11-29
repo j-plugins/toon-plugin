@@ -17,6 +17,7 @@ import com.github.xepozz.toon.language.psi.ToonTypes;
 
 NEWLINE=\r|\n|\r\n
 WHITESPACE=[ \t]+
+ALPHA=[A-Za-z]
 
 %state VALUE
 %%
@@ -27,7 +28,12 @@ WHITESPACE=[ \t]+
     ":"           { yybegin(VALUE); return ToonTypes.DELIMITER; }
 }
 <VALUE> {
-    [^\s][^\n]*   { return ToonTypes.TEXT; }
+    "null"                  { return ToonTypes.NULL; }
+    "false"                 { return ToonTypes.FALSE; }
+    "true"                  { return ToonTypes.TRUE; }
+    [\d]+(.[\d]+)?          { return ToonTypes.NUMBER; }
+    {ALPHA}[^\n]*             { return ToonTypes.TEXT; }
+    \"([^\\\"]|.)+\"             { return ToonTypes.TEXT; }
 }
 
 {WHITESPACE}      { return TokenType.WHITE_SPACE; }

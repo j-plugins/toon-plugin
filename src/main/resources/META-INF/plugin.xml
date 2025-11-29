@@ -12,24 +12,24 @@
         <fileType
                 name="TOON file"
                 implementationClass="com.github.xepozz.toon.language.ToonFileType"
-                language="Toon"
+                language="TOON"
                 extensions="toon"
         />
         <lang.parserDefinition
-                language="Toon"
+                language="TOON"
                 implementationClass="com.github.xepozz.toon.language.ToonParserDefinition"/>
         <lang.syntaxHighlighterFactory
-                language="Toon"
+                language="TOON"
                 implementationClass="com.github.xepozz.toon.language.ToonSyntaxHighlighterFactory"/>
 
         <lang.commenter
-                language="Toon"
+                language="TOON"
                 implementationClass="com.github.xepozz.toon.ide.ToonCommenter"/>
         <completion.contributor
-                language="Toon"
+                language="TOON"
                 implementationClass="com.github.xepozz.toon.ide.completion.ToonCompletionContributor"/>
         <annotator
-                language="Toon"
+                language="TOON"
                 implementationClass="com.github.xepozz.toon.language.ToonAnnotator"/>
 
     </extensions>

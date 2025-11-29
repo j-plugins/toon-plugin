@@ -1,6 +1,6 @@
 package com.github.xepozz.toon.language
 
-import com.github.xepozz.toon.language.psi.ToonDirective
+import com.github.xepozz.toon.language.psi.ToonKey
 import com.github.xepozz.toon.language.psi.ToonValue
 import com.intellij.lang.annotation.AnnotationHolder
 import com.intellij.lang.annotation.Annotator
@@ -12,7 +12,7 @@ import com.intellij.psi.PsiElement
 class ToonAnnotator : Annotator {
     override fun annotate(element: PsiElement, holder: AnnotationHolder) {
         when (element) {
-            is ToonDirective -> {
+            is ToonKey -> {
                 holder.newSilentAnnotation(HighlightSeverity.INFORMATION)
                     .range(element.textRange)
                     .textAttributes(DIRECTIVE_HIGHLIGHT)

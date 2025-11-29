@@ -17,15 +17,16 @@
 
 file ::= entry*
 
-private entry ::= rule | COMMENT | EOL
+private entry ::= keyValueList | COMMENT | EOL
 
-rule ::= directive DELIMITER value?
+keyValueList ::= key DELIMITER value?
 {
     pin=1
 }
 
-directive ::= TEXT
-value ::= TEXT
+key ::= TEXT
+
+value ::= TEXT | NULL | FALSE | TRUE | NUMBER
 {
     implements=["com.intellij.psi.PsiLiteralValue"]
     methods=[getValue getReferences]
