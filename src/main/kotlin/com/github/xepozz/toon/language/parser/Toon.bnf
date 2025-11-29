@@ -1,0 +1,32 @@
+{
+  parserClass = "com.github.xepozz.toon.language.parser.ToonParser"
+
+  extends = "com.intellij.extapi.psi.ASTWrapperPsiElement"
+
+  psiClassPrefix = "Toon"
+  psiImplClassSuffix="Impl"
+  psiPackage="com.github.xepozz.toon.language.psi"
+  psiImplPackage="com.github.xepozz.toon.language.psi.impl"
+
+  elementTypeHolderClass="com.github.xepozz.toon.language.psi.ToonTypes"
+  elementTypeClass = "com.github.xepozz.toon.language.psi.ToonElementType"
+  tokenTypeClass = "com.github.xepozz.toon.language.psi.ToonTokenType"
+
+  psiImplUtilClass="com.github.xepozz.toon.language.psi.impl.ToonImplUtil"
+}
+
+file ::= entry*
+
+private entry ::= rule | COMMENT | EOL
+
+rule ::= directive DELIMITER value?
+{
+    pin=1
+}
+
+directive ::= TEXT
+value ::= TEXT
+{
+    implements=["com.intellij.psi.PsiLiteralValue"]
+    methods=[getValue getReferences]
+}

@@ -1,4 +1,4 @@
-package com.github.xepozz.toonplugin
+package com.github.xepozz.toon
 
 import com.intellij.DynamicBundle
 import org.jetbrains.annotations.NonNls

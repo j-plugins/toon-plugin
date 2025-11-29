@@ -1,15 +1,36 @@
 <!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
-    <id>com.github.xepozz.toonplugin</id>
-    <name>toon-plugin</name>
-    <vendor>xepozz</vendor>
+    <id>com.github.xepozz.toon</id>
+    <name>TOON</name>
+    <vendor email="xepozz@list.ru" url="https://github.com/xepozz">Dmitrii Derepko (@xepozz)</vendor>
 
     <depends>com.intellij.modules.platform</depends>
 
     <resource-bundle>messages.MyBundle</resource-bundle>
 
     <extensions defaultExtensionNs="com.intellij">
-        <toolWindow factoryClass="com.github.xepozz.toonplugin.toolWindow.MyToolWindowFactory" id="MyToolWindow"/>
-        <postStartupActivity implementation="com.github.xepozz.toonplugin.startup.MyProjectActivity" />
+        <fileType
+                name="TOON file"
+                implementationClass="com.github.xepozz.toon.language.ToonFileType"
+                language="Toon"
+                extensions="toon"
+        />
+        <lang.parserDefinition
+                language="Toon"
+                implementationClass="com.github.xepozz.toon.language.ToonParserDefinition"/>
+        <lang.syntaxHighlighterFactory
+                language="Toon"
+                implementationClass="com.github.xepozz.toon.language.ToonSyntaxHighlighterFactory"/>
+
+        <lang.commenter
+                language="Toon"
+                implementationClass="com.github.xepozz.toon.ide.ToonCommenter"/>
+        <completion.contributor
+                language="Toon"
+                implementationClass="com.github.xepozz.toon.ide.completion.ToonCompletionContributor"/>
+        <annotator
+                language="Toon"
+                implementationClass="com.github.xepozz.toon.language.ToonAnnotator"/>
+
     </extensions>
 </idea-plugin>
