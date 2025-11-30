@@ -28,7 +28,7 @@ table ::= tableDefinition DELIMITER (iterable | EOL array)
     pin=2
 }
 
-tableDefinition ::= key LBRACKET '#'? NUMBER RBRACKET (LBRACE iterable RBRACE)?
+tableDefinition ::= key LBRACKET SHARP? NUMBER RBRACKET (LBRACE iterable RBRACE)?
 {
     pin=2
 }

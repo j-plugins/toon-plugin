@@ -19,19 +19,21 @@ NEWLINE=\r|\n|\r\n
 WHITESPACE=[ \t]+
 ALPHA=[A-Za-z]
 NUMBER=[\d]+(.[\d]+)?
+QUOTTED_STRING = "\""(\\\"|[^\"])*"\"" | "\'"(\\\'|[^\'])*"\'"
 
 %state VALUE, TABLE_SIZE
 %%
 
 <YYINITIAL> {
     #[^\n]*       { return ToonTypes.COMMENT; }
-    ([\w]+)      { return ToonTypes.TEXT; }
+    ([\w]+)       { return ToonTypes.TEXT; }
     ":"           { yybegin(VALUE); return ToonTypes.DELIMITER; }
     "["           { yybegin(TABLE_SIZE); return ToonTypes.LBRACKET; }
 }
 
 <TABLE_SIZE> {
     {NUMBER}          { return ToonTypes.NUMBER; }
+    "#"               { return ToonTypes.SHARP; }
     "]"               { yybegin(YYINITIAL); return ToonTypes.RBRACKET; }
 }
 
@@ -42,7 +44,7 @@ NUMBER=[\d]+(.[\d]+)?
     ","                     { return ToonTypes.COMMA; }
     {NUMBER}                { return ToonTypes.NUMBER; }
     {ALPHA}[^\n,]*          { return ToonTypes.TEXT; }
-    \"([^\\\"]|.)+\"        { return ToonTypes.TEXT; }
+    {QUOTTED_STRING}        { return ToonTypes.TEXT; }
 }
 
 
@@ -57,3 +59,5 @@ NUMBER=[\d]+(.[\d]+)?
 "-"                     { return ToonTypes.DASH; }
 {WHITESPACE}            { return TokenType.WHITE_SPACE; }
 {NEWLINE}               { yybegin(YYINITIAL); return ToonTypes.EOL; }
+
+[^]                     { return TokenType.BAD_CHARACTER; }
