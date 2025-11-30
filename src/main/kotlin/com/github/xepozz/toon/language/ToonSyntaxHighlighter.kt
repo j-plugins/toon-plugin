@@ -13,6 +13,7 @@ class ToonSyntaxHighlighter : SyntaxHighlighterBase() {
     override fun getHighlightingLexer() = ToonLexerAdapter()
 
     override fun getTokenHighlights(tokenType: IElementType) = when (tokenType) {
+        ToonTypes.TEXT -> STRING_KEYS
         ToonTypes.NUMBER -> NUMBER_KEYS
         ToonTypes.TRUE -> CONSTANT_KEYS
         ToonTypes.FALSE -> CONSTANT_KEYS
@@ -35,6 +36,9 @@ class ToonSyntaxHighlighter : SyntaxHighlighterBase() {
         )
         private val NUMBER_KEYS = arrayOf(
             DefaultLanguageHighlighterColors.NUMBER
+        )
+        private val STRING_KEYS = arrayOf(
+            DefaultLanguageHighlighterColors.STRING
         )
         private val EMPTY_KEYS = emptyArray<TextAttributesKey>()
     }

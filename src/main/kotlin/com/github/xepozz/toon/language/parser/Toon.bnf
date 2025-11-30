@@ -21,20 +21,37 @@
 
 file ::= entry*
 
-private entry ::= table | keyValueList | COMMENT | EOL
+private entry ::= table | keyValueMap | COMMENT | EOL
 
-table ::= tableDefinition DELIMITER iterable?
+table ::= tableDefinition DELIMITER (iterable | EOL array)
+{
+    pin=2
+}
 
-tableDefinition ::= key LBRACKET NUMBER RBRACKET (LBRACE iterable RBRACE)?
+tableDefinition ::= key LBRACKET '#'? NUMBER RBRACKET (LBRACE iterable RBRACE)?
+{
+    pin=2
+}
 
-keyValueList ::= key DELIMITER iterable?
+array ::= keyValueArray+ | keyValueMap+ | valuesList
+
+valuesList ::= iterable (EOL iterable)*
+
+keyValueArray ::= keyValueArrayItem (EOL keyValueArrayItem)*
+
+keyValueArrayItem ::= DASH (keyValueMap | iterable)
 {
     pin=1
 }
 
+keyValueMap ::= key DELIMITER (iterable | EOL array)
+{
+    pin=2
+}
+
 key ::= TEXT
 
-iterable ::= value (COMMA value)+
+iterable ::= value (COMMA value)*
 
 value ::= TEXT | NULL | FALSE | TRUE | NUMBER
 {

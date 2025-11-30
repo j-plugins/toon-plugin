@@ -20,10 +20,10 @@ class ToonAnnotator : Annotator {
             }
 
             is ToonValue -> {
-                holder.newSilentAnnotation(HighlightSeverity.INFORMATION)
-                    .range(element.textRange)
-                    .textAttributes(VALUE_HIGHLIGHT)
-                    .create()
+//                holder.newSilentAnnotation(HighlightSeverity.INFORMATION)
+//                    .range(element.textRange)
+//                    .textAttributes(VALUE_HIGHLIGHT)
+//                    .create()
             }
         }
     }

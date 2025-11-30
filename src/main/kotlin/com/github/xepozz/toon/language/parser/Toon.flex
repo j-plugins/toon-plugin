@@ -25,7 +25,7 @@ NUMBER=[\d]+(.[\d]+)?
 
 <YYINITIAL> {
     #[^\n]*       { return ToonTypes.COMMENT; }
-    ([\w-]+)      { return ToonTypes.TEXT; }
+    ([\w]+)      { return ToonTypes.TEXT; }
     ":"           { yybegin(VALUE); return ToonTypes.DELIMITER; }
     "["           { yybegin(TABLE_SIZE); return ToonTypes.LBRACKET; }
 }
@@ -54,5 +54,6 @@ NUMBER=[\d]+(.[\d]+)?
 ")"                     { return ToonTypes.RPAREN; }
 "["                     { return ToonTypes.LBRACKET; }
 "]"                     { return ToonTypes.RBRACKET; }
+"-"                     { return ToonTypes.DASH; }
 {WHITESPACE}            { return TokenType.WHITE_SPACE; }
 {NEWLINE}               { yybegin(YYINITIAL); return ToonTypes.EOL; }
