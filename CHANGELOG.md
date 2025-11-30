@@ -1,6 +1,6 @@
 <!-- Keep a Changelog guide -> https://keepachangelog.com -->
 
-# toon-plugin Changelog
+# TOON Changelog
 
 ## [Unreleased]
 ### Added
