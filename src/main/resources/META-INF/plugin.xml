@@ -5,6 +5,7 @@
     <vendor email="xepozz@list.ru" url="https://github.com/xepozz">Dmitrii Derepko (@xepozz)</vendor>
 
     <depends>com.intellij.modules.platform</depends>
+    <depends>org.jetbrains.plugins.yaml</depends>
 
     <resource-bundle>messages.ToonBundle</resource-bundle>
 
@@ -13,6 +14,7 @@
                 name="TOON file"
                 implementationClass="com.github.xepozz.toon.language.ToonFileType"
                 language="TOON"
+                patterns="*.toon;*.toon.yaml"
                 extensions="toon"
         />
         <lang.parserDefinition
