@@ -5,5 +5,4 @@ users[2]{id,name,role}:
   # row 2
   2,Bob,user
 # --- end table ---
-a:
- 
+a: b

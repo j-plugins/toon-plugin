@@ -66,7 +66,7 @@ abstract class IndentingLexerAdapter(
         when {
             newIndent > currentIndent -> {
                 indentStack.add(newIndent)
-                addToken( indentTokenType)
+                addToken(logicalLineStart, indentTokenType)
             }
 
             newIndent < currentIndent -> {

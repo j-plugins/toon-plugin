@@ -1,0 +1,6 @@
+root:
+    key: value
+    users[1]{id,name,role}:
+      1,Alice,admin
+      2,Bob,user
+    key: value

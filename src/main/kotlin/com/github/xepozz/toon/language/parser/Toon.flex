@@ -14,23 +14,17 @@ import com.github.xepozz.toon.language.psi.ToonTypes;
 %eof{  return;
 %eof}
 
-%{
-private int prevIndent = 0;
-private boolean atLineStart = true;
-%}
-
-
 NEWLINE=\r\n|\r|\n
 WHITESPACE=[ \t]+
 ALPHA=[A-Za-z]
 NUMBER=[\d]+(.[\d]+)?
 QUOTTED_STRING = "\""(\\\"|[^\"])*"\"" | "\'"(\\\'|[^\'])*"\'"
 
-%state VALUE, TABLE_SIZE, MAIN
+%state VALUE, TABLE_SIZE
 %%
 
 <YYINITIAL> {
-    #[^\n]*       { return ToonTypes.COMMENT; }
+    #[^\r\n]*       { return ToonTypes.COMMENT; }
     ([\w]+)       { return ToonTypes.TEXT; }
     ":"           { yybegin(VALUE); return ToonTypes.DELIMITER; }
     "["           { yybegin(TABLE_SIZE); return ToonTypes.LBRACKET; }
@@ -39,7 +33,7 @@ QUOTTED_STRING = "\""(\\\"|[^\"])*"\"" | "\'"(\\\'|[^\'])*"\'"
 <TABLE_SIZE> {
     {NUMBER}          { return ToonTypes.NUMBER; }
     "#"               { return ToonTypes.SHARP; }
-    "]"               { yybegin(MAIN); return ToonTypes.RBRACKET; }
+    "]"               { yybegin(YYINITIAL); return ToonTypes.RBRACKET; }
 }
 
 <VALUE> {
@@ -47,7 +41,7 @@ QUOTTED_STRING = "\""(\\\"|[^\"])*"\"" | "\'"(\\\'|[^\'])*"\'"
     "false"|"true"          { return ToonTypes.BOOLEAN; }
     ","                     { return ToonTypes.COMMA; }
     {NUMBER}                { return ToonTypes.NUMBER; }
-    {ALPHA}[^\n,]*          { return ToonTypes.TEXT; }
+    {ALPHA}[^\r\n,]*        { return ToonTypes.TEXT; }
     {QUOTTED_STRING}        { return ToonTypes.TEXT; }
     {WHITESPACE}            { return TokenType.WHITE_SPACE; }
 }
@@ -63,6 +57,6 @@ QUOTTED_STRING = "\""(\\\"|[^\"])*"\"" | "\'"(\\\'|[^\'])*"\'"
 "]"                     { return ToonTypes.RBRACKET; }
 "-"                     { return ToonTypes.DASH; }
 {WHITESPACE}            { return TokenType.WHITE_SPACE; }
-{NEWLINE}               { atLineStart = true; yybegin(YYINITIAL); return ToonTypes.EOL; }
+{NEWLINE}               { yybegin(YYINITIAL); return ToonTypes.EOL; }
 
 [^]                     { return TokenType.BAD_CHARACTER; }

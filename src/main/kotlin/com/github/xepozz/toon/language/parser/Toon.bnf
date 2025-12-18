@@ -45,6 +45,7 @@ private entry ::=
   | list_item
   | COMMENT
   | EOL
+
 object_field ::= key DELIMITER field_value {
   pin = 2
 }
@@ -71,7 +72,7 @@ private list_item_content ::=
     value_list
   | key DELIMITER field_value
 
-table ::= table_header DELIMITER table_data EOL {
+table ::= table_header DELIMITER table_data {
   pin = 2
 }
 
@@ -87,8 +88,15 @@ field_list ::= LBRACE field_names RBRACE {
 
 field_names ::= key (COMMA key)*
 
-private table_data ::=
-    table_row | (EOL table_row)+
+table_data ::= table_data_inline | table_data_multiline
+
+table_data_inline ::= table_data_value
+table_data_multiline ::= EOL INDENT (table_data_multiline_item EOL)* DEDENT {
+    pin = 2
+}
+
+private table_data_multiline_item ::= table_data_value | COMMENT
+private table_data_value ::= value_list
 
 table_row ::= value (COMMA value)*
 
