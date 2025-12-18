@@ -43,7 +43,6 @@ private entry ::=
     object_field
   | table
   | list_item
-  | COMMENT
   | EOL
 
 object_field ::= key DELIMITER field_value {
@@ -91,11 +90,11 @@ field_names ::= key (COMMA key)*
 table_data ::= table_data_inline | table_data_multiline
 
 table_data_inline ::= table_data_value
-table_data_multiline ::= EOL INDENT table_data_multiline_item (EOL table_data_multiline_item)* EOL? DEDENT {
+table_data_multiline ::= EOL INDENT table_data_multiline_item (EOL | table_data_multiline_item)* DEDENT {
     pin = 2
 }
 
-private table_data_multiline_item ::= table_data_value | COMMENT
+private table_data_multiline_item ::= table_data_value
 private table_data_value ::= value_list
 
 table_row ::= value (COMMA value)*
