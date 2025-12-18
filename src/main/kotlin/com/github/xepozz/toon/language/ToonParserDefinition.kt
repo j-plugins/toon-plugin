@@ -1,6 +1,6 @@
 package com.github.xepozz.toon.language
 
-import com.github.xepozz.toon.language.parser.ToonLexerAdapter
+import com.github.xepozz.toon.language.parser.ToonIndentingLexer
 import com.github.xepozz.toon.language.parser.ToonParser
 import com.github.xepozz.toon.language.psi.ToonTokenSets
 import com.github.xepozz.toon.language.psi.ToonTypes
@@ -8,10 +8,9 @@ import com.intellij.lang.ASTNode
 import com.intellij.lang.ParserDefinition
 import com.intellij.psi.FileViewProvider
 import com.intellij.psi.tree.IFileElementType
-import com.intellij.psi.tree.TokenSet
 
 class ToonParserDefinition : ParserDefinition {
-    override fun createLexer(project: com.intellij.openapi.project.Project?) = ToonLexerAdapter()
+    override fun createLexer(project: com.intellij.openapi.project.Project?) = ToonIndentingLexer()
 
     override fun getWhitespaceTokens() = TokenSet.WHITE_SPACE
 

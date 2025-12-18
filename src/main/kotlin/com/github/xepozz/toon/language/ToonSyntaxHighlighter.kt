@@ -1,6 +1,6 @@
 package com.github.xepozz.toon.language
 
-import com.github.xepozz.toon.language.parser.ToonLexerAdapter
+import com.github.xepozz.toon.language.parser.ToonLexer
 import com.github.xepozz.toon.language.psi.ToonTypes
 import com.intellij.openapi.editor.DefaultLanguageHighlighterColors
 import com.intellij.openapi.editor.HighlighterColors
@@ -10,7 +10,7 @@ import com.intellij.psi.TokenType
 import com.intellij.psi.tree.IElementType
 
 class ToonSyntaxHighlighter : SyntaxHighlighterBase() {
-    override fun getHighlightingLexer() = ToonLexerAdapter()
+    override fun getHighlightingLexer() = ToonLexer()
 
     override fun getTokenHighlights(tokenType: IElementType) = when (tokenType) {
         ToonTypes.TEXT -> STRING_KEYS

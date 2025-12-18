@@ -6,7 +6,7 @@ import com.intellij.psi.TokenType;
 import com.github.xepozz.toon.language.psi.ToonTypes;
 
 %%
-%class ToonLexer
+%class _ToonLexer
 %implements FlexLexer
 %unicode
 %function advance

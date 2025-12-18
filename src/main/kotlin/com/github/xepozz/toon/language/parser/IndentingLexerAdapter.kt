@@ -1,34 +1,31 @@
 package com.github.xepozz.toon.language.parser
 
-import com.github.xepozz.toon.language.psi.ToonTypes
-import com.intellij.lexer.FlexAdapter
 import com.intellij.lexer.Lexer
 import com.intellij.lexer.LookAheadLexer
+import com.intellij.psi.tree.IElementType
 
-class ToonLexerAdapter : LookAheadLexer(FlexAdapter(ToonLexer(null))) {
+abstract class IndentingLexerAdapter(
+    lexer: Lexer,
+    private val eolTokenType: IElementType,
+    private val indentTokenType: IElementType,
+    private val dedentTokenType: IElementType,
+) : LookAheadLexer(lexer) {
     private val indentStack = mutableListOf(0)
-    private var start = false
 
     override fun lookAhead(baseLexer: Lexer) {
         val tokenType = baseLexer.tokenType
 
-        println("tokenType: $tokenType")
         if (tokenType == null) {
-            if (!start) {
-                start = true
-                super.lookAhead(baseLexer)
-                return
-            }
             val endOffset = baseLexer.tokenEnd
-            println("compensation last: ${indentStack.size}, position: $endOffset")
             while (indentStack.size > 1) {
                 indentStack.removeLast()
-                addToken(endOffset, ToonTypes.DEDENT)
+                addToken(endOffset, dedentTokenType)
             }
+            advanceAs(baseLexer, tokenType)
             return
         }
 
-        if (tokenType != ToonTypes.EOL) {
+        if (tokenType != eolTokenType) {
             advanceAs(baseLexer, tokenType)
             return
         }
@@ -69,16 +66,16 @@ class ToonLexerAdapter : LookAheadLexer(FlexAdapter(ToonLexer(null))) {
         when {
             newIndent > currentIndent -> {
                 indentStack.add(newIndent)
-                addToken(logicalLineStart, ToonTypes.INDENT)
+                addToken( indentTokenType)
             }
 
             newIndent < currentIndent -> {
-                println("compensation in process: ${indentStack.size}, position: $logicalLineStart")
                 while (indentStack.size > 1 && newIndent < indentStack.last()) {
                     indentStack.removeLast()
-                    addToken(logicalLineStart, ToonTypes.DEDENT)
+                    addToken(logicalLineStart, dedentTokenType)
                 }
             }
+
             else -> {
                 // Same indent – nothing to emit
             }
