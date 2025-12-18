@@ -12,16 +12,15 @@ import com.intellij.psi.tree.IFileElementType
 class ToonParserDefinition : ParserDefinition {
     override fun createLexer(project: com.intellij.openapi.project.Project?) = ToonIndentingLexer()
 
-    override fun getWhitespaceTokens() = TokenSet.WHITE_SPACE
+    override fun getWhitespaceTokens() = ToonTokenSets.WHITESPACES
 
     override fun createParser(project: com.intellij.openapi.project.Project?) = ToonParser()
-//    override fun createParser(project: com.intellij.openapi.project.Project?) = YAMLParser()
 
     override fun getFileNodeType() = FILE
 
     override fun getCommentTokens() = ToonTokenSets.COMMENTS
 
-    override fun getStringLiteralElements() = TokenSet.EMPTY
+    override fun getStringLiteralElements() = ToonTokenSets.STRING_LITERALS
 
     override fun createElement(node: ASTNode) = ToonTypes.Factory.createElement(node)
 
