@@ -90,7 +90,7 @@ field_names ::= key (COMMA key)*
 table_data ::= table_data_inline | table_data_multiline
 
 table_data_inline ::= table_data_value
-table_data_multiline ::= EOL INDENT table_data_multiline_item (EOL | table_data_multiline_item)* DEDENT {
+table_data_multiline ::= EOL INDENT EOL* table_data_multiline_item (EOL | table_data_multiline_item)* DEDENT {
     pin = 2
 }
 
