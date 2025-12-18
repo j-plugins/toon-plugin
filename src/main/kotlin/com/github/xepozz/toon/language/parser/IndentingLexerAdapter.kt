@@ -50,6 +50,10 @@ abstract class IndentingLexerAdapter(
                     columns++
                     index++
                 }
+                '\t' -> {
+                    columns+=2
+                    index+=2
+                }
 
                 '\r', '\n' -> return
                 else -> break
