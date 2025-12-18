@@ -7,13 +7,24 @@ import com.intellij.lexer.LookAheadLexer
 
 class ToonLexerAdapter : LookAheadLexer(FlexAdapter(ToonLexer(null))) {
     private val indentStack = mutableListOf(0)
+    private var start = false
 
     override fun lookAhead(baseLexer: Lexer) {
         val tokenType = baseLexer.tokenType
 
+        println("tokenType: $tokenType")
         if (tokenType == null) {
-            addToken(ToonTypes.DEDENT)
-            super.lookAhead(baseLexer)
+            if (!start) {
+                start = true
+                super.lookAhead(baseLexer)
+                return
+            }
+            val endOffset = baseLexer.tokenEnd
+            println("compensation last: ${indentStack.size}, position: $endOffset")
+            while (indentStack.size > 1) {
+                indentStack.removeLast()
+                addToken(endOffset, ToonTypes.DEDENT)
+            }
             return
         }
 
@@ -42,6 +53,7 @@ class ToonLexerAdapter : LookAheadLexer(FlexAdapter(ToonLexer(null))) {
                     columns++
                     index++
                 }
+
                 '\r', '\n' -> return
                 else -> break
             }
@@ -57,11 +69,13 @@ class ToonLexerAdapter : LookAheadLexer(FlexAdapter(ToonLexer(null))) {
         when {
             newIndent > currentIndent -> {
                 indentStack.add(newIndent)
-                addToken(ToonTypes.INDENT)
+                addToken(logicalLineStart, ToonTypes.INDENT)
             }
+
             newIndent < currentIndent -> {
+                println("compensation in process: ${indentStack.size}, position: $logicalLineStart")
                 while (indentStack.size > 1 && newIndent < indentStack.last()) {
-                    indentStack.removeAt(indentStack.size - 1)
+                    indentStack.removeLast()
                     addToken(logicalLineStart, ToonTypes.DEDENT)
                 }
             }
