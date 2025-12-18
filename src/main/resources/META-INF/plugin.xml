@@ -11,7 +11,7 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <fileType
-                name="TOON file"
+                name="TOON"
                 implementationClass="com.github.xepozz.toon.language.ToonFileType"
                 language="TOON"
                 patterns="*.toon;*.toon.yaml"

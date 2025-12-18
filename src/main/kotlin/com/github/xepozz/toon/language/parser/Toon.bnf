@@ -4,57 +4,101 @@
   extends = "com.intellij.extapi.psi.ASTWrapperPsiElement"
 
   psiClassPrefix = "Toon"
-  psiImplClassSuffix="Impl"
-  psiPackage="com.github.xepozz.toon.language.psi"
-  psiImplPackage="com.github.xepozz.toon.language.psi.impl"
+  psiImplClassSuffix = "Impl"
+  psiPackage = "com.github.xepozz.toon.language.psi"
+  psiImplPackage = "com.github.xepozz.toon.language.psi.impl"
 
-  elementTypeHolderClass="com.github.xepozz.toon.language.psi.ToonTypes"
+  elementTypeHolderClass = "com.github.xepozz.toon.language.psi.ToonTypes"
   elementTypeClass = "com.github.xepozz.toon.language.psi.ToonElementType"
   tokenTypeClass = "com.github.xepozz.toon.language.psi.ToonTokenType"
 
-  psiImplUtilClass="com.github.xepozz.toon.language.psi.impl.ToonImplUtil"
-  tokens=[
-    LPAREN="LPAREN"
-    RPAREN="RPAREN"
+  psiImplUtilClass = "com.github.xepozz.toon.language.psi.impl.ToonImplUtil"
+
+  tokens = [
+    LPAREN = "LPAREN"
+    RPAREN = "RPAREN"
+    LBRACE = "LBRACE"
+    RBRACE = "RBRACE"
+    LBRACKET = "LBRACKET"
+    RBRACKET = "RBRACKET"
+    DELIMITER = "DELIMITER"
+    COMMA = "COMMA"
+    DASH = "DASH"
+    SHARP = "SHARP"
+    EOL = "EOL"
+    COMMENT = "COMMENT"
+    TEXT = "TEXT"
+    NUMBER = "NUMBER"
+    NULL = "NULL"
+    BOOLEAN = "BOOLEAN"
+    INDENT = "INDENT"
+    DEDENT = "DEDENT"
+    BLOCK = "BLOCK"
   ]
 }
 
 file ::= entry*
 
-private entry ::= table | keyValueMap | COMMENT | EOL
+private entry ::=
+    object_field
+  | table
+  | list_item
+  | COMMENT
+  | EOL
+object_field ::= key DELIMITER field_value {
+  pin = 2
+}
+private field_value ::=
+    value_list
+  | nested_object
+  | array
 
-table ::= tableDefinition DELIMITER (iterable | EOL array)
-{
-    pin=2
+value_list ::= value (COMMA value)*
+
+nested_object ::= EOL INDENT entry+ DEDENT {
+    pin = 2
 }
 
-tableDefinition ::= key LBRACKET SHARP? NUMBER RBRACKET (LBRACE iterable RBRACE)?
-{
-    pin=2
+array ::= list_item (EOL list_item)+ {
+    pin = 1
 }
 
-array ::= keyValueArray+ | keyValueMap+ | valuesList
-
-valuesList ::= iterable (EOL iterable)*
-
-keyValueArray ::= keyValueArrayItem (EOL keyValueArrayItem)*
-
-keyValueArrayItem ::= DASH (keyValueMap | iterable)
-{
-    pin=1
+list_item ::= DASH list_item_content {
+  pin = 1
 }
 
-keyValueMap ::= key DELIMITER (iterable | EOL array)
-{
-    pin=2
+private list_item_content ::=
+    value_list
+  | key DELIMITER field_value
+
+table ::= table_header DELIMITER table_data EOL {
+  pin = 2
 }
+
+table_header ::= key LBRACKET table_size RBRACKET field_list? {
+    pin=4
+}
+
+table_size ::= SHARP? NUMBER
+
+field_list ::= LBRACE field_names RBRACE {
+  pin = 1
+}
+
+field_names ::= key (COMMA key)*
+
+private table_data ::=
+    table_row | (EOL table_row)+
+
+table_row ::= value (COMMA value)*
 
 key ::= TEXT
 
-iterable ::= value (COMMA value)*
-
-value ::= TEXT | NULL | FALSE | TRUE | NUMBER
-{
-    implements=["com.intellij.psi.PsiLiteralValue"]
-    methods=[getValue getReferences]
-}
+value ::=
+    TEXT
+  | NUMBER
+  | NULL
+  | BOOLEAN {
+    implements = ["com.intellij.psi.PsiLiteralValue"]
+    methods = [getValue getReferences]
+  }

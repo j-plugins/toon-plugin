@@ -15,8 +15,7 @@ class ToonSyntaxHighlighter : SyntaxHighlighterBase() {
     override fun getTokenHighlights(tokenType: IElementType) = when (tokenType) {
         ToonTypes.TEXT -> STRING_KEYS
         ToonTypes.NUMBER -> NUMBER_KEYS
-        ToonTypes.TRUE -> CONSTANT_KEYS
-        ToonTypes.FALSE -> CONSTANT_KEYS
+        ToonTypes.BOOLEAN -> CONSTANT_KEYS
         ToonTypes.NULL -> CONSTANT_KEYS
         ToonTypes.COMMENT -> COMMENT_KEYS
         TokenType.BAD_CHARACTER -> BAD_CHAR_KEYS

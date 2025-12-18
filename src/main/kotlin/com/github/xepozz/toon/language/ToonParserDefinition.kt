@@ -16,6 +16,7 @@ class ToonParserDefinition : ParserDefinition {
     override fun getWhitespaceTokens() = TokenSet.WHITE_SPACE
 
     override fun createParser(project: com.intellij.openapi.project.Project?) = ToonParser()
+//    override fun createParser(project: com.intellij.openapi.project.Project?) = YAMLParser()
 
     override fun getFileNodeType() = FILE
 
