@@ -19,7 +19,7 @@ abstract class IndentingLexerAdapter(
             val endOffset = baseLexer.tokenEnd
 //            println("compensation last: ${indentStack.size}, offset: $endOffset")
             while (indentStack.size > 1) {
-                indentStack.removeLast()
+                indentStack.remove(indentStack.size - 1)
                 addToken(endOffset, dedentTokenType)
 //                println("tokenType(emulate): $dedentTokenType")
             }
@@ -83,7 +83,7 @@ abstract class IndentingLexerAdapter(
             newIndent < currentIndent -> {
 //                println("compensation in process: ${indentStack.size}, offset: $logicalLineStart")
                 while (indentStack.size > 1 && newIndent < indentStack.last()) {
-                    indentStack.removeLast()
+                    indentStack.remove(indentStack.size - 1)
                     addToken(logicalLineStart, dedentTokenType)
 //                    println("tokenType(emulate): $dedentTokenType")
                 }
